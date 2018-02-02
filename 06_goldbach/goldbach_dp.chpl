@@ -18,7 +18,7 @@ use DynamicIters;
 config const totalNumbers : int = 1000000;
 
 // global primes array
-var primes : [{1..totalNumbers}] bool;
+var primes : [{0..totalNumbers}] bool;
 
 /**
  * Check whether number is prime
