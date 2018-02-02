@@ -15,27 +15,21 @@
 */
 
 config const numOfTasks   : int = here.maxTaskPar;
-config const totalNumbers : int = 1000;
+config const totalNumbers : int = 1000000;
 
 /************************** Custom iterator **********************************/
-proc computeChunk(r: range, taskId, numOfTasks) where r.stridable == false {
-    const numOfElements = r.length;
-    const low = r.low * taskId + 1;
-
-    return low..r.high by numOfTasks;
-}
-
-iter cyclicIterator(r: range(?RT, BoundedRangeType.bounded, ?)) {
+iter cyclicIterator(r: range) {
     for i in r
     do yield i;
 }
 
-iter cyclicIterator(param tag: iterKind, r : range(?RT, BoundedRangeType.bounded, ?))
+iter cyclicIterator(param tag: iterKind, r : range)
 where tag == iterKind.standalone {
     coforall tid in 0..numOfTasks-1 {
         const myIters = r.low*tid+r.low..r.high by numOfTasks;
-        writeln("tid = ", tid, "myIters = ", myIters);
+        //writeln("tid = ", tid, "myIters = ", myIters);
         for i in myIters {
+            //writeln("tid = ", tid, " i = ", i);
             yield i;
         }
     }
@@ -62,12 +56,11 @@ proc isPrime(n : int) : bool {
  */
 proc main() {
     var primes : [{1..totalNumbers}] bool;
-    var oddNumbersRange = {1..totalNumbers-1} by 2;
     var solutions : [{0..numOfTasks-1}] int;
 
     // set primes using custom iterator
-    forall i in cyclicIterator(oddNumbersRange) do {
-        if(prime(i)) then primes[i] = true;
+    forall i in cyclicIterator(1..totalNumbers) do {
+        if(isPrime(i)) then primes[i] = true;
     }
 
     // 2 is prime as well
