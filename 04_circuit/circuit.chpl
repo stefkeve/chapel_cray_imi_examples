@@ -27,7 +27,7 @@ const numOfCombinations : int = 65536;
  * @return bool - true if bit is 1, false otherwise
  */
 proc extractBits(n, i) : bool {
-    return if(z&(1<<i)) then true else false;
+    return if(n&(1<<i)) then true else false;
 }
 
 /**
@@ -70,7 +70,7 @@ proc checkCircuit(taskid : int, z : int) : int {
 */
 proc main() {
     var localSolutions : [{1..numOfTasks}] int;
-
+    
     coforall taskId in 1..numOfTasks do {
         var i = taskId;
         var localSolution : int = 0;
