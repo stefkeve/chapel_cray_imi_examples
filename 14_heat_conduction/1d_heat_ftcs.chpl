@@ -16,11 +16,11 @@
 
 use Math;
 
-config const nX         = 20,
-config const nSteps     = 10,
-config const lenghtX    = 1.0,
-config const alpha      = 0.1,
-config const tMax       = 0.5,
+config const nX         = 20;
+config const nSteps     = 10;
+config const lenghtX    = 1.0;
+config const alpha      = 0.1;
+config const tMax       = 0.5;
 config const outputFile = "1d_heat_temps_ftcs.csv";
 
 /**
