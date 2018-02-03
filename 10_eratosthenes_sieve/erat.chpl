@@ -32,5 +32,5 @@ proc main() {
     }
 
     var totalPrimes = + reduce [x in primes] (x == 0);
-    writeln('Total number of primes is = \n', totalPrimes);
+    writef('Total number of primes is = %i\n', totalPrimes);
 }
