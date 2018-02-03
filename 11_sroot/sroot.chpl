@@ -39,7 +39,7 @@ proc f(x : real) : real {
 * main procedure
 */
 proc main() {
-    var D : {0..numOfTasks-1};
+    var D = {0..numOfTasks-1};
     var globalL : real = 0.0;
     var globalR : real = 1.0;
     var flags   : [D] int;
