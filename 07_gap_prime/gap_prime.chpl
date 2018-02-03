@@ -35,8 +35,9 @@ proc isPrime(n : int) : bool {
  * main procedure
  */
 proc main() {
+    var globalPrimesDomain = {1..0};
     // empty array global primes
-    var globalPrimes  : [{1..0}] int;
+    var globalPrimes  : [globalPrimesDomain] int;
     var partialPrimes : [0..numOfTasks-1, 1..totalNumbers/(2*numOfTasks)] int;
 
     coforall taskId in 0..numOfTasks-1 do {
@@ -59,8 +60,8 @@ proc main() {
     }
 
     sort(globalPrimes);
-
-    var maxGap = max reduce [i in globalPrimes.domain] (globalPrimes[i + 1] - globalPrimes[i]);
+    
+    var maxGap = max reduce [i in 1..globalPrimesDomain.high-1] (globalPrimes[i + 1] - globalPrimes[i]);
 
     writef("Max gap between consecutive prime numbers is %i\n", maxGap);
 }
