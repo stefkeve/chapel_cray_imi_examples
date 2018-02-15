@@ -1,7 +1,7 @@
 /**
 * @file gap_prime.chpl
 *
-* @desription This program searching for the largest gap between a pair of
+* @desription This program searchs for the largest gap between a pair of
 *             of consecutive prime numbers
 *
 * @usage chpl -o gap_prime gap_prime.chpl --fast
@@ -60,7 +60,7 @@ proc main() {
     }
 
     sort(globalPrimes);
-    
+
     var maxGap = max reduce [i in 1..globalPrimesDomain.high-1] (globalPrimes[i + 1] - globalPrimes[i]);
 
     writef("Max gap between consecutive prime numbers is %i\n", maxGap);

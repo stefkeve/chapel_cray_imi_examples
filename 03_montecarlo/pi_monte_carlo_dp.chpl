@@ -7,8 +7,7 @@
 * @usage chpl -o pi_monte_carlo_dp pi_monte_carlo_dp.chpl --fast
 *        ./pi_monte_carlo_dp <<arguments>>
 *
-* @arguments --numOfTasks     - number of parallel tasks
-*            --numOfPoints    - max number of points
+* @arguments --numOfPoints    - max number of points
 */
 
 use Random;
