@@ -22,6 +22,7 @@ config var ncellsX = 10,
 * main procedure
 */
 proc main() {
+    var timer : Timer;
     const pDomain  = {1..ncellsX, 1..ncellsY};
     const interior = pDomain.expand(-1);
     const dx       = (rightX - leftX) / (ncellsX - 1);
@@ -29,6 +30,8 @@ proc main() {
 
     var temp, tempNew : [pDomain] real = 0.0;
 
+    timer.start();
+    
     forall (i,j) in pDomain do {
         var x = leftX + (i-1)*dx;
         var y = downY + (j-1)*dy;
@@ -44,5 +47,8 @@ proc main() {
         temp[interior] = tempNew[interior];
     }
 
+    var wallTime = timer.elapsed();
+
     writeln("Temps ", temp);
+    writef("Wall clock time is = %.6dr\n", wallTime);
 }

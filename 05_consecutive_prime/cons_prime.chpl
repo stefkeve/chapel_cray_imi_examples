@@ -11,6 +11,7 @@
 * @arguments --numOfTasks   - number of parallel tasks
 *            --totalNumbers - check for all integers less than this number
 */
+use Time;
 
 config const numOfTasks   : int = here.maxTaskPar;;
 config const totalNumbers : int = 1000000;
@@ -34,8 +35,10 @@ proc isPrime(n : int) : bool {
 * main procedure
 */
 proc main() {
+    var timer : Timer;
     var solutions : [{0..numOfTasks-1}] int;
 
+    timer.start();
     coforall taskId in 0..numOfTasks-1 do {
         var localSolutions = 0;
         var i = 2*taskId + 1;
@@ -51,6 +54,8 @@ proc main() {
     }
 
     var globalSolutions = + reduce solutions;
+    var wallTime = timer.elapsed();
 
     writef("Total consecutive odd numbers which are prime less than %i is %i\n", totalNumbers, globalSolutions);
+    writef("Wall clock time is = %.6dr\n", wallTime);
 }

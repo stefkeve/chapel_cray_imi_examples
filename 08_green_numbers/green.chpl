@@ -14,6 +14,7 @@
 
 use IO;
 use DynamicIters;
+use Time;
 
 config const totalNumbers : int = 1000000;
 config const fileName = "GreensOut.dat";
@@ -56,10 +57,12 @@ proc digitsSum(in n : int) : int {
  * main procedure
  */
 proc main() {
+    var timer  : Timer;
     var primes : [{1..totalNumbers}] bool;
     var greens : [{1..totalNumbers}] bool;
     var oddNumbersRange = {1..totalNumbers-1} by 2;
 
+    timer.start();
     /* check in parallel on all cores whether number is prime in chunk size of
        50 numbers and store it in primes array */
     forall i in dynamic(oddNumbersRange, chunkSize = 50) do {
@@ -74,6 +77,8 @@ proc main() {
     }
     // number 2 is green number as well
     greens[2] = true;
+    
+    var wallTime = timer.elapsed();
 
     // save found green numbers in file
     var greenFile 	    = open(fileName, iomode.cw);
@@ -85,4 +90,6 @@ proc main() {
 
     greenFileWriter.close();
     greenFile.close();
+
+    writef("Wall clock time is = %.6dr\n", wallTime);
 }

@@ -14,6 +14,7 @@
 use Random;
 use Random.RandomSupport;
 use Math;
+use Time;
 
 config const numOfTasks  : int = here.maxTaskPar;
 config const numOfPoints : int = 1000000000;
@@ -26,8 +27,11 @@ const extraPoints = numOfPoints % numOfTasks;
 * main procedure
 */
 proc main() {
+    var timer : Timer;
     var partialCounts : [{0..numOfTasks-1}] int;
 
+    timer.start();
+    
     coforall taskid in 0..numOfTasks-1 do {
         var seed = RandomSupport.SeedGenerator.currentTime + taskid;
         var rs = new RandomStream(eltType = real, parSafe = false, seed);
@@ -44,7 +48,9 @@ proc main() {
 
     var globalCount = + reduce partialCounts;
     var pi = 4.0 * globalCount / numOfPoints;
+    var wallTime = timer.elapsed();
 
     writef("PI = %.22dr\n", pi);
     writef("Error is = %.16dr\n", abs(pi - PI25DT));
+    writef("Wall clock time is = %.6dr\n", wallTime);
 }

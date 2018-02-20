@@ -12,6 +12,7 @@
 
 use Random;
 use Math;
+use Time;
 
 config const numOfTasks  : int = here.maxTaskPar;
 config const numOfPoints : int = 1000000000;
@@ -22,11 +23,13 @@ const PI25DT = 3.141592653589793238462643;
 * main procedure
 */
 proc main() {
+    var timer : Timer;
     // domain over the number of random points to generate
     var D = {1..numOfPoints};
 
     var rs = new RandomStream(eltType = real, parSafe = false);
 
+    timer.start();
     /* Run the Monte Carlo method using data parallel reduction to compute count.
      * The reduction is over parallel loop iterating in zippered manner over
      * a tuple x,y generated randomly by RandomStream object.
@@ -34,9 +37,11 @@ proc main() {
     var globalCount = + reduce [(x,y) in zip(rs.iterate(D, real), rs.iterate(D, real))] ((x**2 + y**2) <= 1.0);
 
     var pi = 4.0 * globalCount / numOfPoints;
+    var wallTime = timer.elapsed();
 
     delete rs;
 
     writef("PI = %.22dr\n", pi);
     writef("Error is = %.16dr\n", abs(pi - PI25DT));
+    writef("Wall clock time is = %.6dr\n", wallTime);
 }

@@ -13,6 +13,7 @@
 * @arguments --numOfTasks     - number of parallel tasks
 *            --numOfIntervals - number of intervals
 */
+use Time;
 
 config const numOfTasks   : int = here.maxTaskPar;
 config const totalNumbers : int = 1000000;
@@ -55,9 +56,11 @@ proc isPrime(n : int) : bool {
  * main procedure
  */
 proc main() {
+    var timer : Timer;
     var primes : [{1..totalNumbers}] bool;
     var solutions : [{0..numOfTasks-1}] int;
 
+    timer.start();
     // set primes using custom iterator
     forall i in cyclicIterator(1..totalNumbers) do {
         if(isPrime(i)) then primes[i] = true;
@@ -90,10 +93,13 @@ proc main() {
     }
 
     var globalSolutions = + reduce solutions;
+    var wallTime = timer.elapsed();
 
     if(globalSolutions > 0) {
         writeln("Theorem has not been proven");
     } else {
         writeln("Theorem has been proven");
     }
+    
+    writef("Wall clock time is = %.6dr\n", wallTime);
 }

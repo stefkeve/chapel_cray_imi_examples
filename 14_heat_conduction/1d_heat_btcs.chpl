@@ -15,6 +15,7 @@
 */
 
 use Math;
+use Time;
 
 config const nX	        = 20;
 config const nSteps     = 10;
@@ -53,6 +54,7 @@ proc writeToFile(temps) : void {
 * main procedure
 */
 proc main() {
+    var timer : Timer;
     const pDomain1D  = {1..nX};
     const pDomain    = {0..nSteps, 1..nX};
     const interior   = pDomain.dim(2).expand(-1);
@@ -65,6 +67,8 @@ proc main() {
 
     var temp : [pDomain] real = 0.0;
     var B, C, A, E, F, D, Y : [pDomain1D] real = 0.0;
+
+    timer.start();
 
     forall i in interior do {
         temp[0,i] = sin(pi * (i-1)*dx);
@@ -100,6 +104,10 @@ proc main() {
         }
     }
 
+    var wallTime = timer.elapsed();
+
     writeln("Writing results to " , outputFile, " file");
+    writef("Wall clock time is = %.6dr\n", wallTime);
+
     writeToFile(temp);
 }

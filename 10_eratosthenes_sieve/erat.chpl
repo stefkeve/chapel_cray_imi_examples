@@ -11,6 +11,7 @@
 */
 
 use Math;
+use Time;
 
 config const totalNumbers : int = 100000000;
 
@@ -18,9 +19,11 @@ config const totalNumbers : int = 100000000;
 * main procedure
 */
 proc main() {
+    var timer : Timer;
     var sqrtN = sqrt(totalNumbers):int;
     var primes : [{1..totalNumbers}] int;
 
+    timer.start();
     primes[1] = 1;
 
     for c in 2..sqrtN {
@@ -32,5 +35,8 @@ proc main() {
     }
 
     var totalPrimes = + reduce [x in primes] (x == 0);
+    var wallTime = timer.elapsed();
+
     writef('Total number of primes is = %i\n', totalPrimes);
+    writef("Wall clock time is = %.6dr\n", wallTime);
 }

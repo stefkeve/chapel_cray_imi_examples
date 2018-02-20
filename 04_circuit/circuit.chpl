@@ -10,6 +10,7 @@
 *
 * @arguments --numOfTasks - number of parallel tasks
 */
+use Time;
 
 config const numOfTasks : int = here.maxTaskPar;
 
@@ -69,8 +70,10 @@ proc checkCircuit(taskid : int, z : int) : int {
 * main procedure
 */
 proc main() {
+    var timer : Timer;
     var localSolutions : [{1..numOfTasks}] int;
-    
+
+    timer.start();
     coforall taskId in 1..numOfTasks do {
         var i = taskId;
         var localSolution : int = 0;
@@ -85,6 +88,8 @@ proc main() {
 
     // sum all solution found by tasks
     var solutions = + reduce localSolutions;
+    var wallTime  = timer.elapsed();
 
     writef("There are %i different solutions\n", solutions);
+    writef("Wall clock time is = %.6dr\n", wallTime);
 }

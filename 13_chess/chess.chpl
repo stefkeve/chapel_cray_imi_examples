@@ -20,6 +20,7 @@
 use Random;
 use Math;
 use Barrier;
+use Time;
 
 config const numOfTasks   : int = here.maxTaskPar;
 config const m            : int = 8;
@@ -148,8 +149,11 @@ record ChessPiece {
 }
 
 proc main() {
+    var timer : Timer;
     var numOfPiecesPerTask   : [{0..numOfTasks-1}] int = numOfPieces;
     var exchangePiecesBuffer : [{1..0}] ChessPiece;
+
+    timer.start();
 
     coforall taskid in 0..numOfTasks-1 do {
         var mm = m;
@@ -260,6 +264,8 @@ proc main() {
             // wait for first task to finish
             b.barrier();
         }
+        
+        var wallTime = timer.elapsed();
 
         writeln("I'm task ", taskid, " and I have ", numOfPiecesPerTask[taskid], " chess pieces");
 
@@ -270,6 +276,8 @@ proc main() {
                 when 2 do writeln("I'm task ", taskid,". Winner is pawn!  I captured ", piecesLocal[1].numOfCaptured, " pieces!");
             }
         }
+
+        writef("Wall clock time is = %.6dr\n", wallTime);
     }
     //delete rs;
 }

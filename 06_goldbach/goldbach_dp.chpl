@@ -14,6 +14,7 @@
 */
 
 use DynamicIters;
+use Time;
 
 config const totalNumbers : int = 1000000;
 
@@ -58,18 +59,24 @@ proc checkTheorem(n) : int {
  * main procedure
  */
 proc main() {
+    var timer : Timer;
     var oddNumbersRange  = {1..totalNumbers-1} by 2;
     var evenNumbersRange = {2..totalNumbers} by 2;
 
+    timer.start();
+    
     forall i in dynamic(1..totalNumbers, chunkSize=100) do {
         if(isPrime(i)) then primes[i] = true;
     }
 
     var globalSolutions = + reduce [n in dynamic(evenNumbersRange, chunkSize=100)] (checkTheorem(n));
+    var wallTime = timer.elapsed();
 
     if(globalSolutions > 0) {
         writeln("Theorem has not been proven");
     } else {
         writeln("Theorem has been proven");
     }
+
+    writef("Wall clock time is = %.6dr\n", wallTime);
 }

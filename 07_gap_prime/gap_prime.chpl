@@ -12,6 +12,7 @@
 */
 
 use Sort;
+use Time;
 
 config const numOfTasks   : int = here.maxTaskPar;;
 config const totalNumbers : int = 1000000;
@@ -35,10 +36,13 @@ proc isPrime(n : int) : bool {
  * main procedure
  */
 proc main() {
+    var timer : Timer;
     var globalPrimesDomain = {1..0};
     // empty array global primes
     var globalPrimes  : [globalPrimesDomain] int;
     var partialPrimes : [0..numOfTasks-1, 1..totalNumbers/(2*numOfTasks)] int;
+
+    timer.start();
 
     coforall taskId in 0..numOfTasks-1 do {
         var i = 2*taskId + 1;
@@ -62,6 +66,8 @@ proc main() {
     sort(globalPrimes);
 
     var maxGap = max reduce [i in 1..globalPrimesDomain.high-1] (globalPrimes[i + 1] - globalPrimes[i]);
+    var wallTime = timer.elapsed();
 
     writef("Max gap between consecutive prime numbers is %i\n", maxGap);
+    writef("Wall clock time is = %.6dr\n", wallTime);
 }

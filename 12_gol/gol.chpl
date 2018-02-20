@@ -12,6 +12,7 @@
 */
 
 use Random;
+use Time;
 
 config const gridSize     : int  = 1000;
 config const steps 	      : int  = 5000;
@@ -41,8 +42,11 @@ proc printGrid() {
 * main procedure
 */
 proc main() {
+    var timer : Timer;
     var numberOfLivedCells : int;
     var rs = new RandomStream(eltType = real, parSafe = false);
+
+    timer.start();
 
     forall (i,j) in D do {
         grid(i,j) = if rs.getNext() <= 0.5 then true else false;
@@ -65,8 +69,10 @@ proc main() {
     }
 
     numberOfLivedCells = + reduce grid(D);
+    var wallTime = timer.elapsed();
 
     writef("Number of live cells = %i\n", numberOfLivedCells);
+    writef("Wall clock time is = %.6dr\n", wallTime);
 
     delete rs;
 }

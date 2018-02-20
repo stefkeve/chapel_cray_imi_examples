@@ -11,6 +11,7 @@
  */
 
 use Math;
+use Time;
 
 config const numOfTasks     : int = here.maxTaskPar;
 config const numOfIntervals : int = 10000000;
@@ -36,8 +37,10 @@ proc fun(x:real) : real {
 * main procedure
 */
 proc main() {
+    var timer : Timer;
     var partialSums : [{1..numOfTasks}] real;
 
+    timer.start();
     coforall taskid in 1..numOfTasks do {
         var i = taskid;
         var partialSum = 0.0;
@@ -54,7 +57,9 @@ proc main() {
     var globalSum = + reduce partialSums;
     // calculate pi number
     var pi = (fun(A) - fun(B) + globalSum) / (3.0 * numOfIntervals);
+    var wallTime = timer.elapsed();
 
     writef("PI = %.22dr\n", pi);
     writef("Error is = %.16dr\n", abs(pi - PI25DT));
+    writef("Wall clock time is = %.6dr\n", wallTime);
 }

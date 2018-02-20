@@ -12,6 +12,7 @@
 */
 
 use DynamicIters;
+use Time;
 
 config const totalNumbers : int = 1000000;
 
@@ -31,14 +32,19 @@ proc isPrime(n : int) : bool {
 }
 
 proc main() {
+    var timer : Timer;
     // odds number domain
     var oddNumbersRange = {1..totalNumbers-1} by 2;
+
+    timer.start();
 
     //slower
     //var globalSolutions = + reduce [n in oddNumbersRange] (prime(n) && prime(n+2));
 
     //faster
     var globalSolutions = + reduce [n in dynamic(oddNumbersRange, chunkSize=100)] (isPrime(n) && isPrime(n+2));
+    var wallTime = timer.elapsed();
 
     writef("Total consecutive odd numbers which are prime less than %i is %i\n", totalNumbers, globalSolutions);
+    writef("Wall clock time is = %.6dr\n", wallTime);
 }

@@ -11,6 +11,7 @@
 */
 
 use Math;
+use Time;
 
 config const numOfTasks : int = here.maxTaskPar;
 const limit = 1.0e-11;
@@ -39,6 +40,7 @@ proc f(x : real) : real {
 * main procedure
 */
 proc main() {
+    var timer : Timer;
     var D = {0..numOfTasks-1};
     var globalL : real = 0.0;
     var globalR : real = 1.0;
@@ -47,6 +49,8 @@ proc main() {
     var rights  : [D] real;
 
     var part = globalR - globalL;
+
+    timer.start();
 
     while(part > limit) {
         part = part / numOfTasks;
@@ -78,5 +82,8 @@ proc main() {
         flags = 0;
     }
 
+    var wallTime = timer.elapsed();
+
     writef("Smallest positive root of equation f is %10.9dr, f(x) = %13.12dr\n", globalL, f(globalL));
+    writef("Wall clock time is = %.6dr\n", wallTime);
 }
