@@ -6,6 +6,7 @@
 * @usage chpl -o 2d_heat 2d_heat.chpl --fast
 *        ./2d_heat <<arguments>>
 */
+use Time; 
 
 config var ncellsX = 10,
            ncellsY = 10,
