@@ -14,3 +14,10 @@ cd ./<<example_directory>>
 chpl -o <<example>> <<example>>.chpl
 ./example <<arguments>>
 ```
+
+Or you can use shell script to build all example
+
+```
+chmod +x build.sh
+./build
+```
