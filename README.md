@@ -15,7 +15,7 @@ chpl -o <<example>> <<example>>.chpl
 ./example <<arguments>>
 ```
 
-Or you can use shell script to build all example
+Or you can use shell script to build all examples
 
 ```
 chmod +x build.sh
