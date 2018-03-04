@@ -1,10 +1,10 @@
 /**
-* @file 1d_heat_ftcs.chpl
+* @file 1d_heat_ftcs_dist.chpl
 *
-* @desription 1D heat conduction. Forward Time, Centered Space
+* @desription 1D heat conduction. Forward Time, Centered Space, distributed.
 *
-* @usage chpl -o 1d_heat_ftcs 1d_heat_ftcs.chpl --fast
-*        ./1d_heat_ftcs <<arguments>>
+* @usage chpl -o 1d_heat_ftcs_dist 1d_heat_ftcs_dist.chpl --fast
+*        ./1d_heat_ftcs_dist -nl <<numberLocales>> <<arguments>>
 *
 * @arguments --nX
 *            --nSteps
@@ -12,10 +12,14 @@
 *            --alpha
 *            --tMax
 *            --outputFile
+*
 */
 
 use Math;
 use Time;
+use DimensionalDist2D;
+use ReplicatedDim;
+use BlockDim;
 
 config const nX         = 20;
 config const nSteps     = 10;
@@ -54,17 +58,36 @@ proc writeToFile(temps) : void {
 */
 proc main() {
     var timer : Timer;
+
+    // switch Locales array to 2D because using DimensionalDist2D distribution
+    var MyLocales = reshape(Locales[0..numLocales-1], {0..0, 0..numLocales-1});
+    // domain
     const pDomain  = {0..nSteps, 1..nX};
-    const interior = pDomain.dim(2).expand(-1);
+
+    /* ReplicateDim specifier for first dimension, BlockDim specifier for second
+       dimension. For each step we have the same distribution. i.e for n_steps = 3,
+       nX = 8 and numLocales = 4, distribution will be:
+       0 0 1 1 2 2 3 3
+       0 0 1 1 2 2 3 3
+       0 0 1 1 2 2 3 3
+       where number in matrix presents locale (host) id.
+    */
+    const D = pDomain dmapped DimensionalDist2D(MyLocales,
+               		                            new ReplicatedDim(numLocales = 1),
+                                                new BlockDim(numLocales      = numLocales,
+                                                             boundingBoxLow  = 1,
+                                                             boundingBoxHigh = pDomain.dim(2).high));
+    const interior = D.dim(2).expand(-1);
     const dx = lenghtX / (nX-1);
     const dt = tMax / (nSteps-1);
     const r  = alpha * dt/(dx**2);
     const r2 = 1 - 2*r;
 
-    var temp: [pDomain] real = 0.0;
+    var temp : [D] real = 0.0;
 
     timer.start();
 
+    // init temps
     forall i in interior do {
         temp[0,i] = sin(pi * (i-1)*dx);
     }
