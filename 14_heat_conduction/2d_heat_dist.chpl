@@ -1,13 +1,14 @@
 /**
-* @file 2d_heat.chpl
+* @file 2d_heat_dist.chpl
 *
-* @desription 2D heat conduction.
+* @desription 2D heat conduction. Distributed (block distribution)
 *
-* @usage chpl -o 2d_heat 2d_heat.chpl --fast
-*        ./2d_heat <<arguments>>
+* @usage chpl -o 2d_heat_dist 2d_heat_dist.chpl --fast
+*        ./2d_heat_dist -nl <<numberLocales>> <<arguments>>
 */
 
 use Time;
+use BlockDist;
 
 config var ncellsX = 10,
            ncellsY = 10,
@@ -23,7 +24,7 @@ config var ncellsX = 10,
 */
 proc main() {
     var timer : Timer;
-    const pDomain  = {1..ncellsX, 1..ncellsY};
+    const pDomain  = {1..ncellsX, 1..ncellsY} dmapped Block(boundingBox={1..ncellsX, 1..ncellsY});
     const interior = pDomain.expand(-1);
     const dx       = lengthX / ncellsX;
     const dy       = lengthY / ncellsY;
