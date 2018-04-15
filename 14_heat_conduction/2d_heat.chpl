@@ -41,7 +41,7 @@ proc main() {
     for step in 1..nsteps do {
         forall (i,j) in interior do {
             tempNew[i,j] = temp[i,j] + coeff*(temp[i-1, j] + temp[i+1,j] - 4.0*temp[i,j] +
-                           	                  temp[i, j-1] + temp[i,j+1]);
+                                              temp[i, j-1] + temp[i,j+1]);
         }
 
         temp[interior] = tempNew[interior];

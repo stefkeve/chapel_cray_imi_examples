@@ -44,10 +44,10 @@ proc main() {
        where number in matrix presents locale (host) id.
     */
     const D = pDomain dmapped DimensionalDist2D(MyLocales,
-                           		                new BlockDim(numLocales = numLocales,
+                                                new BlockDim(numLocales = numLocales,
                                                              boundingBoxLow  = 1,
                                                              boundingBoxHigh = pDomain.dim(1).high),
-		                                        new ReplicatedDim(numLocales = 1));
+                                                new ReplicatedDim(numLocales = 1));
 
     const interior = D.expand(-1);
     const dx       = lengthX / ncellsX;
@@ -65,8 +65,8 @@ proc main() {
 
     for step in 1..nsteps do {
         forall (i,j) in interior do {
-        	tempNew[i,j] = temp[i,j] + coeff*(temp[i-1, j] + temp[i+1,j] - 4.0*temp[i,j] +
-                           	                  temp[i, j-1] + temp[i,j+1]);
+            tempNew[i,j] = temp[i,j] + coeff*(temp[i-1, j] + temp[i+1,j] - 4.0*temp[i,j] +
+                                              temp[i, j-1] + temp[i,j+1]);
         }
 
         temp[interior] = tempNew[interior];
