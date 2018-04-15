@@ -14,7 +14,7 @@ use DimensionalDist2D;
 use ReplicatedDim;
 use BlockDim;
 
-config var ncellsX = 10,
+config var ncellsX = 16,
            ncellsY = 10,
            nsteps  = 20,
            lengthX = 10,
@@ -63,7 +63,7 @@ proc main() {
         temp[i,j] = ao*exp(-x*x/(2.0*sigma*sigma)) + ao*exp(-y*y/(2.0*sigma*sigma));
     }
 
-    for step in [1..nsteps] do {
+    for step in 1..nsteps do {
         forall (i,j) in interior do {
         	tempNew[i,j] = temp[i,j] + coeff*(temp[i-1, j] + temp[i+1,j] - 4.0*temp[i,j] +
                            	                  temp[i, j-1] + temp[i,j+1]);
@@ -74,6 +74,6 @@ proc main() {
 
     var wallTime = timer.elapsed();
 
-    writeln("Temps ", temp);
+    writeln(temp);
     writef("Wall clock time is = %.6dr\n", wallTime);
 }
