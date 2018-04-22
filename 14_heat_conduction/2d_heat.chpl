@@ -44,7 +44,12 @@ proc main() {
                                               temp[i, j-1] + temp[i,j+1]);
         }
 
-        temp[interior] = tempNew[interior];
+        forall (i,j) in interior do {
+            temp[i,j] = tempNew[i,j];
+        }
+        
+        //slower copy
+        //temp[interior] = tempNew[interior];
     }
 
     var wallTime = timer.elapsed();

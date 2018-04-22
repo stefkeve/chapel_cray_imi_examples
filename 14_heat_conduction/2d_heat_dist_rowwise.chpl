@@ -68,8 +68,13 @@ proc main() {
             tempNew[i,j] = temp[i,j] + coeff*(temp[i-1, j] + temp[i+1,j] - 4.0*temp[i,j] +
                                               temp[i, j-1] + temp[i,j+1]);
         }
+        
+        forall (i,j) in interior do {
+            temp[i,j] = tempNew[i,j];
+        }
 
-        temp[interior] = tempNew[interior];
+        //slower copy
+        //temp[interior] = tempNew[interior];
     }
 
     var wallTime = timer.elapsed();
