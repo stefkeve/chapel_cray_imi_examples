@@ -24,17 +24,17 @@ proc main() {
     var primes : [{1..totalNumbers}] int;
 
     timer.start();
-    primes[1] = 1;
+    primes[1] = true;
 
     for c in 2..sqrtN {
-        if(primes[c] == 0) {
+        if(primes[c] == false) {
             forall m in c*c..totalNumbers by c {
-                if(primes[m] == 0) then primes[m] = 1;
+                if(primes[m] == false) then primes[m] = true;
             }
         }
     }
 
-    var totalPrimes = + reduce [x in primes] (x == 0);
+    var totalPrimes = + reduce [x in primes] (x == false);
     var wallTime = timer.elapsed();
 
     writef('Total number of primes is = %i\n', totalPrimes);
