@@ -81,7 +81,7 @@ proc main() {
     var wallTime = timer.elapsed();
 
     // save found green numbers in file
-    var greenFile 	    = open(fileName, iomode.cw);
+    var greenFile       = open(fileName, iomode.cw);
     var greenFileWriter = greenFile.writer();
 
     for i in greens.domain do {
