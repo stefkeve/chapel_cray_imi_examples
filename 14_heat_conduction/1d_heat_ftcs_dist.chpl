@@ -73,7 +73,7 @@ proc main() {
        where number in matrix presents locale (host) id.
     */
     const D = pDomain dmapped DimensionalDist2D(MyLocales,
-               		                            new ReplicatedDim(numLocales = 1),
+                                                new ReplicatedDim(numLocales = 1),
                                                 new BlockDim(numLocales      = numLocales,
                                                              boundingBoxLow  = 1,
                                                              boundingBoxHigh = pDomain.dim(2).high));
