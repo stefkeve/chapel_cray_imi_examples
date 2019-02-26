@@ -15,7 +15,7 @@ use Random;
 use Time;
 
 config const gridSize     : int  = 1000;
-config const steps 	      : int  = 5000;
+config const steps        : int  = 5000;
 config const printingGrid : bool = false;
 
 const BigD = {0..gridSize+1, 0..gridSize+1};
