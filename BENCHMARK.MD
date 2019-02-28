@@ -1,3 +1,5 @@
+## Examples Chapel Cray vs MPI - Single locale (shared memory), 16 Cores ##
+
 <table border="0" cellpadding="0" cellspacing="0" width="1083" style="border-collapse:
  collapse;table-layout:fixed;width:812pt">
  <colgroup><col width="236" style="mso-width-source:userset;mso-width-alt:8630;width:177pt">
@@ -6,8 +8,7 @@
  <col width="64" span="11" style="width:48pt">
  </colgroup><tbody>
  <tr height="25" style="height:18.75pt">
-  <td colspan="9" height="25" class="xl99" style="height:18.75pt">Single locale
-  (shared memory), 16 cores</td>
+  <td colspan="9" height="25" class="xl99" style="height:18.75pt"></td>
   <td rowspan="4" class="xl87" style="border-bottom:.5pt solid black">diff</td>
  </tr>
  <tr height="21" style="height:15.75pt">
